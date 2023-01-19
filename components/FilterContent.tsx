@@ -37,7 +37,7 @@ const FilterContent = ({ btnTigger, genres }: FilterContentProps) => {
   return (
     <Popover>
       <PopoverTrigger>{btnTigger}</PopoverTrigger>
-      <PopoverContent>
+      <PopoverContent minW="370px">
         <PopoverArrow />
         <PopoverCloseButton />
         <PopoverHeader>Filters</PopoverHeader>
@@ -45,17 +45,23 @@ const FilterContent = ({ btnTigger, genres }: FilterContentProps) => {
           <HStack minH="42px" display="flex" alignItems="flex-start">
             <Text minW="60px">Genres</Text>
             <SimpleGrid columns={2} minW="200px">
-              {genres?.map((genre: string, i) => (
-                <Checkbox key={i} size="sm" colorScheme="red" minH="40px">
-                  {genre.name}
-                </Checkbox>
-              ))}
+              {genres?.map(
+                (genre: string, i) =>
+                  genre.mal_id !== 49 &&
+                  genre.mal_id !== 12 &&
+                  genre.mal_id !== 50 &&
+                  genre.mal_id !== 55 && (
+                    <Checkbox key={i} size="sm" colorScheme="gray" minH="40px">
+                      {genre.name}
+                    </Checkbox>
+                  )
+              )}
             </SimpleGrid>
           </HStack>
           <Divider height="10px" />
           <HStack minH="42px">
             <Text minW="60px">NSFW</Text>
-            <Switch size="md" />
+            <Switch size="md" colorScheme="gray" />
           </HStack>
         </PopoverBody>
         <Divider height="10px" />
