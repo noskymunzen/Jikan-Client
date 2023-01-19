@@ -1,22 +1,22 @@
+const baseURL = "https://api.jikan.moe/v4";
 
-const baseURL = 'https://api.jikan.moe/v4/anime'
- 
-const getAnime = async () => {
-    const response = await fetch(baseURL);
-    const data = await response.json();
-    console.log(data);
-    return data;
+const getAnimes = async (page: number, search: string, sfw: boolean) => {
+  const response = await fetch(
+    `${baseURL}/anime?q=${search}&page=${page}&sfw=${sfw}`
+  );
+  const data = await response.json();
+  return data;
 };
 
-const getAnimeById = async (id:string) => {
-    const response = await fetch(`${baseURL}/${id}`);
-    const data = await response.json();
-    console.log(data);
-    return data;
+const getAnimeGenres = async () => {
+  const response = await fetch(`${baseURL}/genres/anime`);
+  const data = await response.json();
+  console.log(data);
+  return data;
 };
 
 const $anime = {
-    getAnime,
-    getAnimeById
-}
+  getAnimes,
+  getAnimeGenres,
+};
 export default $anime;
