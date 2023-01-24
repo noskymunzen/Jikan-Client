@@ -1,11 +1,9 @@
+import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import "@fontsource/roboto/400.css";
 import type { AppProps } from "next/app";
-import { ChakraProvider } from "@chakra-ui/react";
-import { extendTheme } from "@chakra-ui/react";
 
 export default function App({ Component, pageProps }: AppProps) {
-
-const theme = extendTheme({
+  const theme = extendTheme({
     styles: {
       global: () => ({
         body: {
