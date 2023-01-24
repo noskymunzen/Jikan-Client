@@ -1,13 +1,4 @@
-import {
-  Box,
-  Text,
-  Input,
-  InputRightElement,
-  InputGroup,
-  Flex,
-  Heading,
-  Icon,
-} from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 
 export interface HeaderProps {
   title: string;

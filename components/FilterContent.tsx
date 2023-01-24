@@ -1,39 +1,46 @@
 import {
-  Container,
-  Flex,
-  useDisclosure,
-  InputGroup,
-  InputRightElement,
-  Input,
-  IconButton,
-  ButtonGroup,
   Button,
+  ButtonGroup,
+  Checkbox,
+  Divider,
+  HStack,
   Popover,
-  PopoverTrigger,
-  PopoverContent,
   PopoverArrow,
-  PopoverHeader,
   PopoverBody,
   PopoverCloseButton,
-  HStack,
-  VStack,
+  PopoverContent,
+  PopoverHeader,
+  PopoverTrigger,
+  SimpleGrid,
   Switch,
   Text,
-  Divider,
-  Checkbox,
-  SimpleGrid,
-  Stack,
-  RadioGroup,
-  Radio,
 } from "@chakra-ui/react";
-import Genre from "../types/genres";
+import { ReactNode } from "react";
+import Genre from "../types/genre";
 
 export interface FilterContentProps {
-  btnTigger: HTMLButtonElement;
-  genres: Genre;
+  btnTigger: ReactNode;
+  genres: Genre[];
+  selectedGenres: string[];
+  onSelectGenre: (mal_id: string) => void;
+  onFilterSearch: () => void;
+  onCleanFilter: () => void;
+  onChangeSwitch: (checked: boolean) => void;
+  NSFW: boolean;
+  spinner: boolean;
 }
 
-const FilterContent = ({ btnTigger, genres }: FilterContentProps) => {
+const FilterContent = ({
+  btnTigger,
+  genres,
+  onSelectGenre,
+  onFilterSearch,
+  selectedGenres,
+  onCleanFilter,
+  onChangeSwitch,
+  NSFW,
+  spinner,
+}: FilterContentProps) => {
   return (
     <Popover>
       <PopoverTrigger>{btnTigger}</PopoverTrigger>
@@ -42,26 +49,40 @@ const FilterContent = ({ btnTigger, genres }: FilterContentProps) => {
         <PopoverCloseButton />
         <PopoverHeader>Filters</PopoverHeader>
         <PopoverBody overflowY="auto" height="300px">
-          <HStack minH="42px" display="flex" alignItems="flex-start">
-            <Text minW="60px">Genres</Text>
-            <SimpleGrid columns={2} minW="200px">
-              {genres?.map(
-                (genre: string, i) =>
-                  genre.mal_id !== 49 &&
-                  genre.mal_id !== 12 &&
-                  genre.mal_id !== 50 &&
-                  genre.mal_id !== 55 && (
-                    <Checkbox key={i} size="sm" colorScheme="gray" minH="40px">
-                      {genre.name}
-                    </Checkbox>
-                  )
-              )}
-            </SimpleGrid>
-          </HStack>
-          <Divider height="10px" />
           <HStack minH="42px">
             <Text minW="60px">NSFW</Text>
-            <Switch size="md" colorScheme="gray" />
+            <Switch
+              disabled={spinner}
+              size="md"
+              colorScheme="gray"
+              isChecked={!NSFW}
+              onChange={(e) => onChangeSwitch(!!e.target.value)}
+            />
+          </HStack>
+          <Divider height="10px" />
+          <HStack
+            minH="42px"
+            mt="0.5rem"
+            display="flex"
+            alignItems="flex-start"
+          >
+            <Text minW="60px">Genres</Text>
+            <SimpleGrid columns={2} minW="200px">
+              {genres?.map((genre: Genre, i) => (
+                <Checkbox
+                  disabled={spinner}
+                  key={i}
+                  size="sm"
+                  colorScheme="gray"
+                  minH="40px"
+                  value={genre.mal_id}
+                  isChecked={selectedGenres.includes(genre.mal_id.toString())}
+                  onChange={(e) => onSelectGenre(e.target.value)}
+                >
+                  {genre.name}
+                </Checkbox>
+              ))}
+            </SimpleGrid>
           </HStack>
         </PopoverBody>
         <Divider height="10px" />
@@ -72,7 +93,13 @@ const FilterContent = ({ btnTigger, genres }: FilterContentProps) => {
           height="50px"
           alignItems="center"
         >
-          <Button size="sm" mt="5px" minW="67px">
+          <Button
+            size="sm"
+            mt="5px"
+            minW="67px"
+            onClick={() => onCleanFilter()}
+            disabled={spinner}
+          >
             Clear
           </Button>
           <Button
@@ -83,6 +110,8 @@ const FilterContent = ({ btnTigger, genres }: FilterContentProps) => {
             _hover={{ bg: "#5e51e8" }}
             minW="67px"
             mr="0.5rem"
+            onClick={() => onFilterSearch()}
+            disabled={spinner}
           >
             Search
           </Button>
