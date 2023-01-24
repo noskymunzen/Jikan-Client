@@ -1,6 +1,7 @@
+import { ThemeTypings } from "@chakra-ui/react";
 import { GenreName } from "../types/anime";
 
-export const GenreColors = {
+export const GenreColors: Record<GenreName, ThemeTypings["colorSchemes"]> = {
   [GenreName.ROMANCE]: "red",
   [GenreName.SLICE_OF_LIFE]: "green",
   [GenreName.ADVENTURE]: "yellow",
