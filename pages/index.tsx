@@ -45,11 +45,7 @@ export default function Home() {
   const [spinner, setSpinner] = useState<boolean>(false);
   const [error, setError] = useState<string | null>("");
 
-  const {
-    isOpen: isOpenDwr,
-    onOpen: onOpenDwr,
-    onClose: onCloseDwr,
-  } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   // animes request
   const getAnimes = async (
@@ -149,7 +145,7 @@ export default function Home() {
 
   // drawer component
   const onOpenDrawer = (item: Anime) => {
-    onOpenDwr();
+    onOpen();
     setSelectedAnime(item);
   };
 
@@ -238,13 +234,13 @@ export default function Home() {
           <>
             <AnimeCards
               items={animeList}
-              onOpenDrawer={onOpenDwr}
+              onOpenDrawer={onOpenDrawer}
               loading={skeleton}
             />
             {selectedAnime && (
               <AnimeDrawer
-                isOpen={isOpenDwr}
-                onClose={onCloseDwr}
+                isOpen={isOpen}
+                onClose={onClose}
                 item={selectedAnime}
               />
             )}
