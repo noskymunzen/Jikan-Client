@@ -70,6 +70,7 @@ const AnimeCards = ({ items, onOpenDrawer, loading }: AnimeCardProps) => {
             flexDirection={{ base: "row", md: "column" }}
             border="2px"
             borderColor="gray.100"
+            bg="white"
           >
             <Box width="197px" height="300px">
               <Image
@@ -101,7 +102,7 @@ const AnimeCards = ({ items, onOpenDrawer, loading }: AnimeCardProps) => {
                   mt="1rem"
                   leftIcon={<FaRegEye />}
                   fontSize="sm"
-                  bg="#dbd9f6"
+                  bg="#dee0e1"
                 >
                   Watch Details
                 </Button>
