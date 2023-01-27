@@ -10,7 +10,6 @@ import {
   Input,
   InputGroup,
   InputRightElement,
-  Spinner,
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -42,10 +41,19 @@ export default function Home() {
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
   const [pageRange] = usePagination(totalPages, currentPage);
   const [skeleton, setSkeleton] = useState<boolean>(true);
-  const [spinner, setSpinner] = useState<boolean>(false);
   const [error, setError] = useState<string | null>("");
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isOpenDwr,
+    onOpen: onOpenDwr,
+    onClose: onCloseDrw,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenPop,
+    onOpen: onOpenPop,
+    onClose: onClosePop,
+    onToggle,
+  } = useDisclosure();
 
   // animes request
   const getAnimes = async (
@@ -129,14 +137,16 @@ export default function Home() {
   };
 
   const onSearchFilter = () => {
-    setSpinner(true);
+    setAnimeList([]);
+    setSkeleton(true);
+    onClosePop();
     if (currentPage === 1) {
       getAnimes(currentPage, search, NSFW, selectedGenres);
     }
     setCurrentPage(1);
     setTimeout(() => {
-      setSpinner(false);
-    }, 600);
+      setSkeleton(false);
+    }, 1000);
   };
   const onCleanFilter = () => {
     setSelectedGenres([]);
@@ -145,7 +155,7 @@ export default function Home() {
 
   // drawer component
   const onOpenDrawer = (item: Anime) => {
-    onOpen();
+    onOpenDwr();
     setSelectedAnime(item);
   };
 
@@ -193,7 +203,7 @@ export default function Home() {
             </InputRightElement>
             <Input
               ref={inputRef}
-              disabled={skeleton || spinner}
+              disabled={skeleton}
               borderColor="#4e42d4"
               focusBorderColor="#4e42d4"
               type="text"
@@ -203,7 +213,8 @@ export default function Home() {
             />
           </InputGroup>
           <FilterContent
-            spinner={spinner}
+            skeleton={skeleton}
+            isOpen={isOpenPop}
             NSFW={NSFW}
             onChangeSwitch={onChangeSwitch}
             genres={genres}
@@ -213,24 +224,17 @@ export default function Home() {
             onCleanFilter={onCleanFilter}
             btnTigger={
               <IconButton
+                onClick={onToggle}
                 aria-label="Filter database"
                 icon={<IoFilter />}
-                disabled={skeleton || spinner}
+                disabled={skeleton}
               />
             }
           />
         </Flex>
-        {spinner && (
-          <Spinner
-            thickness="3px"
-            speed="0.65s"
-            emptyColor="gray.200"
-            color="#4e42d4"
-            size="xl"
-          />
-        )}
+
         {error && <ErrorAlert error={error} />}
-        {!spinner && !error && (
+        {!error && (
           <>
             <AnimeCards
               items={animeList}
@@ -239,8 +243,8 @@ export default function Home() {
             />
             {selectedAnime && (
               <AnimeDrawer
-                isOpen={isOpen}
-                onClose={onClose}
+                isOpen={isOpenDwr}
+                onClose={onCloseDrw}
                 item={selectedAnime}
               />
             )}
@@ -270,8 +274,6 @@ export default function Home() {
                     borderColor="#4e42d4"
                     bg={currentPage === page ? "#4e42d4" : "#DCDCDC"}
                     color={currentPage === page ? "#FFFFFF" : "#696969"}
-
-                    // disabled={page <= 1 && true}
                   >
                     {page}
                   </Button>
@@ -281,7 +283,7 @@ export default function Home() {
                   maxH="32px"
                   width={{ base: "30px", md: "55px" }}
                   bg="#E5E5E5"
-                  disabled={currentPage === totalPages || skeleton || spinner}
+                  disabled={currentPage === totalPages || skeleton}
                 >
                   ››
                 </Button>

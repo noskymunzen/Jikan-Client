@@ -27,7 +27,8 @@ export interface FilterContentProps {
   onCleanFilter: () => void;
   onChangeSwitch: (checked: boolean) => void;
   NSFW: boolean;
-  spinner: boolean;
+  isOpen: boolean;
+  skeleton: boolean;
 }
 
 const FilterContent = ({
@@ -39,10 +40,11 @@ const FilterContent = ({
   onCleanFilter,
   onChangeSwitch,
   NSFW,
-  spinner,
+  skeleton,
+  isOpen,
 }: FilterContentProps) => {
   return (
-    <Popover>
+    <Popover closeOnBlur={true} isOpen={isOpen}>
       <PopoverTrigger>{btnTigger}</PopoverTrigger>
       <PopoverContent minW="370px">
         <PopoverArrow />
@@ -52,7 +54,7 @@ const FilterContent = ({
           <HStack minH="42px">
             <Text minW="60px">NSFW</Text>
             <Switch
-              disabled={spinner}
+              disabled={skeleton}
               size="md"
               colorScheme="gray"
               isChecked={!NSFW}
@@ -70,7 +72,7 @@ const FilterContent = ({
             <SimpleGrid columns={2} minW="200px">
               {genres?.map((genre: Genre, i) => (
                 <Checkbox
-                  disabled={spinner}
+                  disabled={skeleton}
                   key={i}
                   size="sm"
                   colorScheme="gray"
@@ -98,7 +100,7 @@ const FilterContent = ({
             mt="5px"
             minW="67px"
             onClick={() => onCleanFilter()}
-            disabled={spinner}
+            disabled={skeleton}
           >
             Clear
           </Button>
@@ -110,8 +112,10 @@ const FilterContent = ({
             _hover={{ bg: "#5e51e8" }}
             minW="67px"
             mr="0.5rem"
-            onClick={() => onFilterSearch()}
-            disabled={spinner}
+            onClick={() => {
+              onFilterSearch();
+            }}
+            disabled={skeleton}
           >
             Search
           </Button>
