@@ -48,7 +48,7 @@ const AnimeDrawer = ({ isOpen, onClose, item }: AnimeDrawerProps) => {
           <DrawerHeader>
             <Stack direction="row" gap="3">
               <Text>{item?.title}</Text>
-              <HStack mx="2" mt="5px" justify="center">
+              <HStack>
                 <Text>{item?.score}</Text>
                 <Icon as={BsFillStarFill} color="#efb810" />
               </HStack>

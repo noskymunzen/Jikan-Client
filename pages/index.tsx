@@ -48,12 +48,7 @@ export default function Home() {
     onOpen: onOpenDwr,
     onClose: onCloseDrw,
   } = useDisclosure();
-  const {
-    isOpen: isOpenPop,
-    onOpen: onOpenPop,
-    onClose: onClosePop,
-    onToggle,
-  } = useDisclosure();
+  const { onToggle } = useDisclosure();
 
   // animes request
   const getAnimes = async (
@@ -139,7 +134,6 @@ export default function Home() {
   const onSearchFilter = () => {
     setAnimeList([]);
     setSkeleton(true);
-    onClosePop();
     if (currentPage === 1) {
       getAnimes(currentPage, search, NSFW, selectedGenres);
     }
@@ -214,7 +208,6 @@ export default function Home() {
           </InputGroup>
           <FilterContent
             skeleton={skeleton}
-            isOpen={isOpenPop}
             NSFW={NSFW}
             onChangeSwitch={onChangeSwitch}
             genres={genres}

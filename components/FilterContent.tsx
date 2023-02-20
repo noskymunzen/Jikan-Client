@@ -27,7 +27,6 @@ export interface FilterContentProps {
   onCleanFilter: () => void;
   onChangeSwitch: (checked: boolean) => void;
   NSFW: boolean;
-  isOpen: boolean;
   skeleton: boolean;
 }
 
@@ -41,14 +40,13 @@ const FilterContent = ({
   onChangeSwitch,
   NSFW,
   skeleton,
-  isOpen,
 }: FilterContentProps) => {
   return (
-    <Popover closeOnBlur={true} isOpen={isOpen}>
+    <Popover>
       <PopoverTrigger>{btnTigger}</PopoverTrigger>
       <PopoverContent minW="370px">
         <PopoverArrow />
-        <PopoverCloseButton />
+        <PopoverCloseButton fontSize="12px" />
         <PopoverHeader>Filters</PopoverHeader>
         <PopoverBody overflowY="auto" height="300px">
           <HStack minH="42px">
